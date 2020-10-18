@@ -133,6 +133,7 @@ plotConvergence(x_true,x[:5],scale = 'linear')
 #we also can test n = 100 and n = 1000
 
 #Problem 3(optional)
+# we must recongnize it is different from previous iteration, due to different dims of iteration equation Ma = D-L, x[k + 1] = (U @ x[k])/Ma+b/Ma.
 def GaussSeidelIteration(A, b, x0=None, tol=1e-13, numIter=100):
     '''
     Jacobi iteraiton:
@@ -145,12 +146,14 @@ def GaussSeidelIteration(A, b, x0=None, tol=1e-13, numIter=100):
     x: solution array such that x[i] = i-th iterate
     '''
     n = A.shape[0]
-    x = np.zeros((numIter + 1, n))
+    x = np.zeros((numIter + 1, n, n))
     if x0 is not None:
         x[0] = x0
     D, L, U = getAuxMatrix(A)
     for k in range(numIter):
-        x[k + 1] = (U@x[k])/(D-L)+b/(D-L)
+        Ma = D-L
+        x[k + 1] = (U @ x[k])/Ma+b/Ma
+        #x[k + 1] = ((L + U) @ x[k]) / D + b / D
         if norm(x[k + 1] - x[k]) < tol:
             break
 
