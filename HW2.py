@@ -131,3 +131,27 @@ plotConvergence(x_true,x[:5],scale = 'linear')
 #he same tolerance just it's like four times as big approximately
 #four times as big. we need to increase our iterations.
 #we also can test n = 100 and n = 1000
+
+#Problem 3(optional)
+def GaussSeidelIteration(A, b, x0=None, tol=1e-13, numIter=100):
+    '''
+    Jacobi iteraiton:
+    A: nxn matrix
+    b: (n,) vector
+    x0: initial guess
+    numIter: total number of iteration
+    tol: algorithm stops if ||x^{k+1} - x^{k}|| < tol
+    return: x
+    x: solution array such that x[i] = i-th iterate
+    '''
+    n = A.shape[0]
+    x = np.zeros((numIter + 1, n))
+    if x0 is not None:
+        x[0] = x0
+    D, L, U = getAuxMatrix(A)
+    for k in range(numIter):
+        x[k + 1] = (U@x[k])/(D-L)+b/(D-L)
+        if norm(x[k + 1] - x[k]) < tol:
+            break
+
+    return x[:k + 1]
