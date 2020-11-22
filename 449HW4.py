@@ -77,7 +77,6 @@ def jacobiIteration(A, b, x0=None, tol=1e-13, numIter=100):
 
 
 def simpleOptim(A,b):
-    Matrix_X = jacobiIteration(A, b, x0=None, tol=1e-13, numIter=100)
-    fmin = (1/2)*np.dot(Matrix_X, A@Matrix_X ) - np.dot(b, Matrix_X)
-    xmin = Matrix_X
+    xmin = jacobiIteration(A, b, x0=None, tol=1e-13, numIter=100)
+    fmin = (1/2)*np.dot(xmin, A@xmin ) - np.dot(b, xmin)
     return fmin , xmin
